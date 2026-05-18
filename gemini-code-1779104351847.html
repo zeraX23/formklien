@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
+    <title>Form Order ke WhatsApp Klien</title>
+    <style>
+        /* BARU: Mempertegas warna background dan teks agar tidak bisa diubah oleh sistem HP */
+        html, body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f2f5 !important; 
+            color: #1a1a1a !important;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 40px 20px; 
+            box-sizing: border-box; 
+        }
+        
+        .form-container { background-color: #ffffff !important; padding: 35px 40px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #1a1a1a; margin-top: 0; margin-bottom: 10px; font-size: 24px; }
+        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #444; font-weight: 600; font-size: 14px; }
+        
+        input[type="text"], input[type="url"], input[type="number"], select, textarea { 
+            width: 100%; padding: 12px 15px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; font-size: 14px; 
+            background-color: #f9fafb !important; color: #1a1a1a !important; transition: all 0.3s ease; font-family: inherit; 
+        }
+        
+        input:focus, select:focus, textarea:focus { border-color: #25D366; background-color: #ffffff !important; outline: none; box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1); }
+        textarea { resize: vertical; min-height: 80px; }
+        
+        button { width: 100%; padding: 14px; background-color: #25D366; color: white !important; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        button:hover:not(:disabled) { background-color: #1DA851; }
+        button:disabled { background-color: #9ca3af; cursor: not-allowed; opacity: 0.8; }
+        
+        .highlight-wa { background-color: #e8f9f0 !important; border: 1px solid #25D366; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Kirim Order ke Klien</h2>
+        <p class="subtitle">Isi data dan masukkan nomor WA tujuan</p>
+        
+        <form id="orderForm">
+            
+            <div class="highlight-wa">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="nomor_wa_klien" style="color: #128c7e;">Nomor WhatsApp Tujuan (Klien)</label>
+                    <input type="text" id="nomor_wa_klien" placeholder="Contoh: 081234567890" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="marketplace">Marketplace</label>
+                <select id="marketplace" required>
+                    <option value="" disabled selected>-- Pilih Platform --</option>
+                    <option value="Shopee">Shopee</option>
+                    <option value="Tokopedia">Tokopedia</option>
+                    <option value="TikTok Shop">TikTok Shop</option>
+                    <option value="Lazada">Lazada</option>
+                    <option value="Lainnya">Lainnya...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nama_toko">Nama Toko</label>
+                <input type="text" id="nama_toko" placeholder="Masukkan nama toko" required>
+            </div>
+
+            <div class="form-group">
+                <label for="link_produk">Link Produk</label>
+                <input type="url" id="link_produk" placeholder="https://..." required>
+            </div>
+
+            <div class="form-group" style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label for="jumlah_ulasan">Target Ulasan</label>
+                    <input type="number" id="jumlah_ulasan" placeholder="Jml" min="0" required>
+                </div>
+                <div style="flex: 1;">
+                    <label for="limit_checkout">Max Pcs / Akun</label>
+                    <input type="number" id="limit_checkout" placeholder="Jml Pcs" min="1" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="metode_pembayaran">Metode Pembayaran</label>
+                <select id="metode_pembayaran" required>
+                    <option value="" disabled selected>-- Pilih Metode --</option>
+                    <option value="COD">COD (Bayar di Tempat)</option>
+                    <option value="Virtual Account BCA">Virtual Account BCA</option>
+                    <option value="Virtual Account Mandiri">Virtual Account Mandiri</option>
+                    <option value="E-Wallet">E-Wallet (OVO/Dana/ShopeePay)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="catatan">Catatan / Instruksi Khusus</label>
+                <textarea id="catatan" placeholder="Opsional..."></textarea>
+            </div>
+
+            <button type="submit" id="btnSubmit">
+                <svg id="waIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                </svg>
+                <span id="btnText">Kirim via WhatsApp</span>
+            </button>
+            
+        </form>
+    </div>
+
+    <script>
+        const orderForm = document.getElementById("orderForm");
+        const btnSubmit = document.getElementById("btnSubmit");
+        const btnText = document.getElementById("btnText");
+        const waIcon = document.getElementById("waIcon");
+
+        const formInputs = document.querySelectorAll('#orderForm input, #orderForm select, #orderForm textarea');
+        
+        window.addEventListener('load', () => {
+            formInputs.forEach(input => {
+                const savedData = localStorage.getItem('form_klien_' + input.id);
+                if(savedData) {
+                    input.value = savedData;
+                }
+            });
+        });
+
+        formInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                localStorage.setItem('form_klien_' + input.id, input.value);
+            });
+        });
+
+        orderForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            btnSubmit.disabled = true;
+            btnText.innerText = "Memproses...";
+            waIcon.style.display = "none";
+
+            let nomorTujuan = document.getElementById("nomor_wa_klien").value.trim();
+            nomorTujuan = nomorTujuan.replace(/\D/g, '');
+            if (nomorTujuan.startsWith('0')) {
+                nomorTujuan = '62' + nomorTujuan.substring(1);
+            }
+
+            const waktuSekarang = new Date();
+            const namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            
+            const hari = namaHari[waktuSekarang.getDay()];
+            const tanggal = waktuSekarang.getDate();
+            const bulan = namaBulan[waktuSekarang.getMonth()];
+            const tahun = waktuSekarang.getFullYear();
+            
+            const jam = waktuSekarang.getHours().toString().padStart(2, '0');
+            const menit = waktuSekarang.getMinutes().toString().padStart(2, '0');
+            const detik = waktuSekarang.getSeconds().toString().padStart(2, '0');
+
+            const formatTanggal = `${hari}, ${tanggal} ${bulan} ${tahun}`;
+            const formatJam = `${jam}:${menit}:${detik} WIB`;
+
+            const marketplace = document.getElementById("marketplace").value;
+            const namaToko = document.getElementById("nama_toko").value;
+            const linkProduk = document.getElementById("link_produk").value;
+            const jumlahUlasan = document.getElementById("jumlah_ulasan").value;
+            const limitCheckout = document.getElementById("limit_checkout").value;
+            const metodePembayaran = document.getElementById("metode_pembayaran").value;
+            const catatan = document.getElementById("catatan").value;
+
+            let pesan = `*DETAIL ORDER BARU*\n\n`;
+            pesan += `*Hari, Tanggal:* ${formatTanggal}\n`;
+            pesan += `*Pukul:* ${formatJam}\n\n`;
+            pesan += `*Marketplace:* ${marketplace}\n`;
+            pesan += `*Nama Toko:* ${namaToko}\n`;
+            pesan += `*Link Produk:* ${linkProduk}\n`;
+            pesan += `*Target Ulasan:* ${jumlahUlasan} Ulasan\n`;
+            pesan += `*Batas:* ${limitCheckout} Pcs per 1 Akun CO\n`;
+            pesan += `*Metode Pembayaran:* ${metodePembayaran}\n`;
+            
+            if(catatan) {
+                pesan += `\n*Catatan Khusus:*\n${catatan}\n`;
+            }
+
+            const pesanEncoded = encodeURIComponent(pesan);
+            const linkWA = `https://wa.me/${nomorTujuan}?text=${pesanEncoded}`;
+            window.open(linkWA, '_blank');
+
+            setTimeout(() => {
+                btnSubmit.disabled = false;
+                btnText.innerText = "Kirim via WhatsApp";
+                waIcon.style.display = "block";
+                
+                orderForm.reset();
+                formInputs.forEach(input => {
+                    localStorage.removeItem('form_klien_' + input.id);
+                });
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
